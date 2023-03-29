@@ -31,6 +31,7 @@ public class Car : MonoBehaviour
     [SerializeField] private float maxSteeringAngle = 20.0f;
     [SerializeField] private Transform meshParentTransform = null;
     [SerializeField] private List<AxleInfo> axels;
+    [SerializeField] private Transform centerOfMass = null;
 
 
     private float currentMotorTorque = 0.0f;
@@ -55,11 +56,15 @@ public class Car : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Rigidbody rigidbody = GetComponent<Rigidbody>();
+
         currentMotorTorque = initialMotorTorque;
 
         // This is needed since the car models needed to be rotated 180 around the y-axis to face
         // forward; which is a requirement for the WheelCollider.
         initialMeshParentRotation = meshParentTransform.transform.localRotation;
+
+        rigidbody.centerOfMass = centerOfMass.transform.localPosition;
     }
 
     // Update is called once per frame
