@@ -59,7 +59,7 @@ public class Car : MonoBehaviour
 
         // This is needed since the car models needed to be rotated 180 around the y-axis to face
         // forward; which is a requirement for the WheelCollider.
-        initialMeshParentRotation = meshParentTransform.transform.rotation;
+        initialMeshParentRotation = meshParentTransform.transform.localRotation;
     }
 
     // Update is called once per frame
@@ -73,6 +73,14 @@ public class Car : MonoBehaviour
         currentMotorTorque += motorTorqueIncreasePerSecond * Time.fixedDeltaTime;
 
         currentMotorTorque = Mathf.Clamp(currentMotorTorque, 0.0f, maxMotorTorque);
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.collider.CompareTag("Obstacle"))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
     }
 
     void moveAxle(AxleInfo axle)

@@ -140,7 +140,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
@@ -238,7 +238,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
@@ -300,7 +300,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
@@ -403,8 +403,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.811287, y: 3.255162, z: 13.45937}
-  m_Center: {x: 3.0641618, y: 1.627581, z: 6.729685}
+  m_Size: {x: 7.2800717, y: 3.255162, z: 13.45937}
+  m_Center: {x: 3.049464, y: 1.627581, z: 6.729685}
 --- !u!1 &7099599526151771560
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 1828944687528938568}
   m_Layer: 0
   m_Name: raceCarRed
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -503,10 +503,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca9cf2b1c48840088d830d742c98f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialMotorTorque: 1
-  motorTorqueIncreasePerSecond: 1
-  maxMotorTorque: 1
-  maxSteeringAngle: 20
+  initialMotorTorque: 300
+  motorTorqueIncreasePerSecond: 10
+  maxMotorTorque: 1000
+  maxSteeringAngle: 30
   meshParentTransform: {fileID: 2453019074640203665}
   axels:
   - leftWheelCollider: {fileID: 3818412536587870413}
@@ -661,7 +661,7 @@ WheelCollider:
     m_AsymptoteValue: 0.5
     m_Stiffness: 1
   m_SidewaysFriction:
-    m_ExtremumSlip: 0.2
+    m_ExtremumSlip: 1
     m_ExtremumValue: 1
     m_AsymptoteSlip: 0.5
     m_AsymptoteValue: 0.75
