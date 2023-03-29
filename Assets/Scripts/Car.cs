@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
@@ -13,6 +14,9 @@ public class Car : MonoBehaviour
     [SerializeField] private bool useTouchPosition = true;
 
     [SerializeField] private Direction direction = Direction.Middle;
+
+    private Rigidbody rigidBody = null;
+    private float originalDrag = 0.0f;
 
     void Awake()
     {
@@ -29,26 +33,27 @@ public class Car : MonoBehaviour
         EnhancedTouchSupport.Disable();
     }
 
-
     // Start is called before the first frame update
     void Start()
     {
-
+        rigidBody = GetComponent<Rigidbody>();
+        originalDrag = rigidBody.drag;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        movePerFrame();
+        movePerFrameFixed();
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        Debug.Log($"{other.tag}");
-
-        if (other.CompareTag("Obstacle"))
         {
-            SceneManager.LoadScene("MainMenu");
+            Debug.Log($"{other.collider.tag}");
+
+            if (other.collider.CompareTag("Obstacle"))
+            {
+                SceneManager.LoadScene("MainMenu");
+            }
         }
     }
 
@@ -62,16 +67,17 @@ public class Car : MonoBehaviour
         this.direction = direction;
     }
 
-    void movePerFrame()
+    void movePerFrameFixed()
     {
         handleTouch();
 
-        rotate();
+        rotateFixed();
 
-        moveForward();
+        moveForwardFixed();
 
-        speed += speedIncreasePerSecond * Time.deltaTime;
+        speed += speedIncreasePerSecond * Time.fixedDeltaTime;
     }
+
 
     void handleTouch()
     {
@@ -98,14 +104,18 @@ public class Car : MonoBehaviour
         }
     }
 
-    void rotate()
+    void rotateFixed()
     {
-        transform.Rotate(0.0f, (int)direction * rotationSpeed * Time.deltaTime, 0.0f);
+        float yRotation = (int)direction * rotationSpeed * Time.fixedDeltaTime;
+        Quaternion relativeRotation = Quaternion.Euler(0.0f, yRotation, 0.0f);
+
+        rigidBody.MoveRotation(rigidBody.rotation * relativeRotation);
     }
 
-    void moveForward()
+    void moveForwardFixed()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        rigidBody.AddRelativeForce(
+            Vector3.forward * speed * Time.fixedDeltaTime, ForceMode.Impulse);
     }
 
     bool touchedRightSideOfScreen(Touch touch)
