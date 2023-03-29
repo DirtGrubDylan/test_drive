@@ -1,22 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
-using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
 
+[System.Serializable]
+public class AxleInfo
+{
+    // The axel's left wheel collider and model.
+    public WheelCollider leftWheelCollider;
+    public Transform leftWheelModel;
+
+    // The axel's right wheel collider and model.
+    public WheelCollider rightWheelCollider;
+    public Transform rightWheelModel;
+
+    public bool hasMotor;
+    public bool hasSteering;
+}
+
 public class Car : MonoBehaviour
 {
-    [SerializeField] private float speed = 10.0f;
-    [SerializeField] private float speedIncreasePerSecond = 1.0f;
-    [SerializeField] private float rotationSpeed = 100.0f;
-    [SerializeField] private bool useTouchPosition = true;
 
-    [SerializeField] private Direction direction = Direction.Middle;
+    [SerializeField] private float initialMotorTorque = 10.0f;
+    [SerializeField] private float motorTorqueIncreasePerSecond = 1.0f;
+    [SerializeField] private float maxMotorTorque = 1000.0f;
+    [SerializeField] private float maxSteeringAngle = 20.0f;
+    [SerializeField] private Transform meshParentTransform = null;
+    [SerializeField] private List<AxleInfo> axels;
 
-    private Rigidbody rigidBody = null;
-    private float originalDrag = 0.0f;
+
+    private float currentMotorTorque = 0.0f;
+    private Direction currentDirection = Direction.Middle;
+    private Quaternion initialMeshParentRotation = Quaternion.identity;
 
     void Awake()
     {
@@ -36,86 +55,58 @@ public class Car : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
-        originalDrag = rigidBody.drag;
+        currentMotorTorque = initialMotorTorque;
+
+        // This is needed since the car models needed to be rotated 180 around the y-axis to face
+        // forward; which is a requirement for the WheelCollider.
+        initialMeshParentRotation = meshParentTransform.transform.rotation;
     }
 
+    // Update is called once per frame
     void FixedUpdate()
     {
-        movePerFrameFixed();
-    }
-
-    void OnCollisionEnter(Collision other)
-    {
+        foreach (AxleInfo axle in axels)
         {
-            Debug.Log($"{other.collider.tag}");
-
-            if (other.collider.CompareTag("Obstacle"))
-            {
-                SceneManager.LoadScene("MainMenu");
-            }
-        }
-    }
-
-    public void steer(int directionValue)
-    {
-        direction = (Direction)directionValue;
-    }
-
-    public void steer(Direction direction)
-    {
-        this.direction = direction;
-    }
-
-    void movePerFrameFixed()
-    {
-        handleTouch();
-
-        rotateFixed();
-
-        moveForwardFixed();
-
-        speed += speedIncreasePerSecond * Time.fixedDeltaTime;
-    }
-
-
-    void handleTouch()
-    {
-        if (!useTouchPosition)
-        {
-            return;
+            moveAxle(axle);
         }
 
-        if (Touch.activeFingers.Count == 1)
+        currentMotorTorque += motorTorqueIncreasePerSecond * Time.fixedDeltaTime;
+
+        currentMotorTorque = Mathf.Clamp(currentMotorTorque, 0.0f, maxMotorTorque);
+    }
+
+    void moveAxle(AxleInfo axle)
+    {
+        if (axle.hasSteering)
         {
-            Touch activeTouch = Touch.activeFingers[0].currentTouch;
-
-            if (activeTouch.began)
-            {
-                if (touchedRightSideOfScreen(activeTouch))
-                {
-                    steer(Direction.Right);
-                }
-                else
-                {
-                    steer(Direction.Left);
-                }
-            }
+            axle.leftWheelCollider.steerAngle = getSteering();
+            axle.rightWheelCollider.steerAngle = getSteering();
         }
+
+        if (axle.hasMotor)
+        {
+            axle.leftWheelCollider.motorTorque = currentMotorTorque;
+            axle.rightWheelCollider.motorTorque = currentMotorTorque;
+        }
+
+        moveWheelModel(axle.leftWheelCollider, axle.leftWheelModel);
+        moveWheelModel(axle.rightWheelCollider, axle.rightWheelModel);
     }
 
-    void rotateFixed()
+    float getSteering()
     {
-        float yRotation = (int)direction * rotationSpeed * Time.fixedDeltaTime;
-        Quaternion relativeRotation = Quaternion.Euler(0.0f, yRotation, 0.0f);
-
-        rigidBody.MoveRotation(rigidBody.rotation * relativeRotation);
+        return (int)currentDirection * maxSteeringAngle;
     }
 
-    void moveForwardFixed()
+    void moveWheelModel(WheelCollider collider, Transform model)
     {
-        rigidBody.AddRelativeForce(
-            Vector3.forward * speed * Time.fixedDeltaTime, ForceMode.Impulse);
+        Vector3 colliderWorldPosition;
+        Quaternion colliderWorldRotation;
+
+        collider.GetWorldPose(out colliderWorldPosition, out colliderWorldRotation);
+
+        model.transform.position = colliderWorldPosition;
+        model.transform.rotation = colliderWorldRotation * initialMeshParentRotation;
     }
 
     bool touchedRightSideOfScreen(Touch touch)
@@ -128,5 +119,10 @@ public class Car : MonoBehaviour
         Left = -1,
         Middle = 0,
         Right = 1,
+    }
+
+    public void steer(int directionValue)
+    {
+        currentDirection = (Direction)directionValue;
     }
 }
