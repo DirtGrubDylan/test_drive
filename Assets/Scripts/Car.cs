@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.EnhancedTouch;
@@ -30,8 +31,16 @@ public class Car : MonoBehaviour
     [SerializeField] private float maxMotorTorque = 1000.0f;
     [SerializeField] private float maxSteeringAngle = 20.0f;
     [SerializeField] private Transform meshParentTransform = null;
-    [SerializeField] private List<AxleInfo> axels;
     [SerializeField] private Transform centerOfMass = null;
+
+    [SerializeField] private WheelCollider frontLeft = null;
+    [SerializeField] private WheelCollider frontRight = null;
+    [SerializeField] private WheelCollider backLeft = null;
+    [SerializeField] private WheelCollider backRight = null;
+    [SerializeField] private TextMeshProUGUI text = null;
+
+    [SerializeField] private List<AxleInfo> axels;
+
 
 
     private float currentMotorTorque = 0.0f;
@@ -65,11 +74,15 @@ public class Car : MonoBehaviour
         initialMeshParentRotation = meshParentTransform.transform.localRotation;
 
         rigidbody.centerOfMass = centerOfMass.transform.localPosition;
+
+        text.text = "FUCK YOU :)";
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        updateTextWithFrictions();
+
         foreach (AxleInfo axle in axels)
         {
             moveAxle(axle);
@@ -120,6 +133,30 @@ public class Car : MonoBehaviour
 
         model.transform.position = colliderWorldPosition;
         model.transform.rotation = colliderWorldRotation * initialMeshParentRotation;
+    }
+
+    void updateTextWithFrictions()
+    {
+        float frontLeftFriction = getFriction(frontLeft);
+        float frontRightFriction = getFriction(frontRight);
+        float backLeftFriction = getFriction(backLeft);
+        float backRightFriction = getFriction(backRight);
+
+        text.text =
+            $"FL: {frontLeftFriction} | FR: {frontRightFriction}\n"
+                + $"BL: {backLeftFriction} | BR: {backRightFriction}";
+    }
+
+    float getFriction(WheelCollider collider)
+    {
+        WheelHit wheelData;
+
+        collider.GetGroundHit(out wheelData);
+
+        float currentSidewaySlip = wheelData.sidewaysSlip;
+        float sidewaysExtremumSlip = collider.sidewaysFriction.extremumSlip;
+
+        return currentSidewaySlip / sidewaysExtremumSlip;
     }
 
     bool touchedRightSideOfScreen(Touch touch)
