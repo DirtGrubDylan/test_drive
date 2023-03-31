@@ -19,8 +19,8 @@ public class AxleInfo
     public WheelCollider rightWheelCollider;
     public Transform rightWheelModel;
 
-    public bool hasMotor;
-    public bool hasSteering;
+    public bool hasMotor = false;
+    public bool hasSteering = false;
 }
 
 public class Car : MonoBehaviour
@@ -30,8 +30,10 @@ public class Car : MonoBehaviour
     [SerializeField] private float motorTorqueIncreasePerSecond = 1.0f;
     [SerializeField] private float maxMotorTorque = 1000.0f;
     [SerializeField] private float maxSteeringAngle = 20.0f;
+    [SerializeField] private float antiRollForce = 5000.0f;
     [SerializeField] private Transform meshParentTransform = null;
     [SerializeField] private Transform centerOfMass = null;
+
 
     [SerializeField] private WheelCollider frontLeft = null;
     [SerializeField] private WheelCollider frontRight = null;
@@ -43,6 +45,7 @@ public class Car : MonoBehaviour
 
 
 
+    private Rigidbody rigidbody = null;
     private float currentMotorTorque = 0.0f;
     private Direction currentDirection = Direction.Middle;
     private Quaternion initialMeshParentRotation = Quaternion.identity;
@@ -65,7 +68,7 @@ public class Car : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Rigidbody rigidbody = GetComponent<Rigidbody>();
+        rigidbody = GetComponent<Rigidbody>();
 
         currentMotorTorque = initialMotorTorque;
 
@@ -74,15 +77,16 @@ public class Car : MonoBehaviour
         initialMeshParentRotation = meshParentTransform.transform.localRotation;
 
         rigidbody.centerOfMass = centerOfMass.transform.localPosition;
+    }
 
-        text.text = "FUCK YOU :)";
+    void Update()
+    {
+        updateTextWithSpeed();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        updateTextWithFrictions();
-
         foreach (AxleInfo axle in axels)
         {
             moveAxle(axle);
@@ -115,8 +119,51 @@ public class Car : MonoBehaviour
             axle.rightWheelCollider.motorTorque = currentMotorTorque;
         }
 
+        applyAntiRoll(axle.leftWheelCollider, axle.rightWheelCollider);
+
         moveWheelModel(axle.leftWheelCollider, axle.leftWheelModel);
         moveWheelModel(axle.rightWheelCollider, axle.rightWheelModel);
+    }
+
+    void applyAntiRoll(WheelCollider leftWheel, WheelCollider rightWheel)
+    {
+        WheelHit hit;
+        float upForceLeft = 1.0f;
+        float upForceRight = 1.0f;
+        bool leftIsGrounded = leftWheel.GetGroundHit(out hit);
+
+        if (leftIsGrounded)
+        {
+            upForceLeft =
+                (-leftWheel.transform.InverseTransformPoint(hit.point).y - leftWheel.radius)
+                    / leftWheel.suspensionDistance;
+        }
+
+        bool rightIsGrounded = rightWheel.GetGroundHit(out hit);
+
+        if (rightIsGrounded)
+        {
+            upForceRight =
+                (-rightWheel.transform.InverseTransformPoint(hit.point).y - rightWheel.radius)
+                    / rightWheel.suspensionDistance;
+        }
+
+
+        float scaledAntiRollForce = (upForceLeft - upForceRight) * antiRollForce;
+
+        if (leftIsGrounded)
+        {
+            rigidbody.AddForceAtPosition(
+                leftWheel.transform.up * -scaledAntiRollForce,
+                leftWheel.transform.position);
+        }
+
+        if (rightIsGrounded)
+        {
+            rigidbody.AddForceAtPosition(
+                rightWheel.transform.up * -scaledAntiRollForce,
+                rightWheel.transform.position);
+        }
     }
 
     float getSteering()
@@ -135,28 +182,21 @@ public class Car : MonoBehaviour
         model.transform.rotation = colliderWorldRotation * initialMeshParentRotation;
     }
 
-    void updateTextWithFrictions()
+    void updateTextWithSpeed()
     {
-        float frontLeftFriction = getFriction(frontLeft);
-        float frontRightFriction = getFriction(frontRight);
-        float backLeftFriction = getFriction(backLeft);
-        float backRightFriction = getFriction(backRight);
+        float mph = getMph(frontLeft);
 
-        text.text =
-            $"FL: {frontLeftFriction} | FR: {frontRightFriction}\n"
-                + $"BL: {backLeftFriction} | BR: {backRightFriction}";
+        text.text = $"Motor Torque: {currentMotorTorque} | RPM: {frontLeft.rpm}\nMPH: {mph}";
     }
 
-    float getFriction(WheelCollider collider)
+    float getMph(WheelCollider collider)
     {
-        WheelHit wheelData;
+        // radius is in meters
+        float circumFerenceM = 2.0f * 3.14f * collider.radius;
+        float speedOnKmh = (circumFerenceM / 1000.0f * collider.rpm) * 60;
 
-        collider.GetGroundHit(out wheelData);
-
-        float currentSidewaySlip = wheelData.sidewaysSlip;
-        float sidewaysExtremumSlip = collider.sidewaysFriction.extremumSlip;
-
-        return currentSidewaySlip / sidewaysExtremumSlip;
+        // converting kmh to mph
+        return speedOnKmh * 0.62f;
     }
 
     bool touchedRightSideOfScreen(Touch touch)
