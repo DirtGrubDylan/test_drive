@@ -45,7 +45,7 @@ public class Car : MonoBehaviour
 
 
 
-    private Rigidbody rigidbody = null;
+    private Rigidbody rigidBody = null;
     private float currentMotorTorque = 0.0f;
     private Direction currentDirection = Direction.Middle;
     private Quaternion initialMeshParentRotation = Quaternion.identity;
@@ -68,7 +68,7 @@ public class Car : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
+        rigidBody = GetComponent<Rigidbody>();
 
         currentMotorTorque = initialMotorTorque;
 
@@ -76,7 +76,7 @@ public class Car : MonoBehaviour
         // forward; which is a requirement for the WheelCollider.
         initialMeshParentRotation = meshParentTransform.transform.localRotation;
 
-        rigidbody.centerOfMass = centerOfMass.transform.localPosition;
+        rigidBody.centerOfMass = centerOfMass.transform.localPosition;
     }
 
     void Update()
@@ -153,14 +153,14 @@ public class Car : MonoBehaviour
 
         if (leftIsGrounded)
         {
-            rigidbody.AddForceAtPosition(
+            rigidBody.AddForceAtPosition(
                 leftWheel.transform.up * -scaledAntiRollForce,
                 leftWheel.transform.position);
         }
 
         if (rightIsGrounded)
         {
-            rigidbody.AddForceAtPosition(
+            rigidBody.AddForceAtPosition(
                 rightWheel.transform.up * -scaledAntiRollForce,
                 rightWheel.transform.position);
         }
