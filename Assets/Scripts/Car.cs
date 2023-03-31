@@ -128,13 +128,13 @@ public class Car : MonoBehaviour
     void applyAntiRoll(WheelCollider leftWheel, WheelCollider rightWheel)
     {
         WheelHit hit;
-        float upForceLeft = 1.0f;
-        float upForceRight = 1.0f;
+        float percentageOfForceLeft = 1.0f;
+        float percentageOfForceRight = 1.0f;
         bool leftIsGrounded = leftWheel.GetGroundHit(out hit);
 
         if (leftIsGrounded)
         {
-            upForceLeft =
+            percentageOfForceLeft =
                 (-leftWheel.transform.InverseTransformPoint(hit.point).y - leftWheel.radius)
                     / leftWheel.suspensionDistance;
         }
@@ -143,13 +143,14 @@ public class Car : MonoBehaviour
 
         if (rightIsGrounded)
         {
-            upForceRight =
+            percentageOfForceRight =
                 (-rightWheel.transform.InverseTransformPoint(hit.point).y - rightWheel.radius)
                     / rightWheel.suspensionDistance;
         }
 
 
-        float scaledAntiRollForce = (upForceLeft - upForceRight) * antiRollForce;
+        float scaledAntiRollForce =
+            (percentageOfForceLeft - percentageOfForceRight) * antiRollForce;
 
         if (leftIsGrounded)
         {

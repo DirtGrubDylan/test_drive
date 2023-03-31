@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.18028305, g: 0.22571313, b: 0.3069213, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &243027301
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+      propertyPath: m_Name
+      value: raceCarGreen (SphereCollider)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
 --- !u!146 &304605465 stripped
 WheelCollider:
   m_CorrespondingSourceObject: {fileID: 5611312931579645231, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
@@ -416,6 +473,11 @@ WheelCollider:
   m_CorrespondingSourceObject: {fileID: 2743588756975801110, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
   m_PrefabInstance: {fileID: 7421351207341412311}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1254167737 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d88d62147e6914ba6bc16dacc42ba92f, type: 3}
+  m_PrefabInstance: {fileID: 243027301}
+  m_PrefabAsset: {fileID: 0}
 --- !u!146 &1482027436 stripped
 WheelCollider:
   m_CorrespondingSourceObject: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
@@ -558,7 +620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 20, z: -40}
+  m_FollowOffset: {x: 0, y: 20, z: 40}
   m_XDamping: 1
   m_YDamping: 1
   m_ZDamping: 1
@@ -567,11 +629,6 @@ MonoBehaviour:
   m_YawDamping: 0
   m_RollDamping: 0
   m_AngularDamping: 0
---- !u!4 &543450653319836160 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7023177694230969815, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
-  m_PrefabInstance: {fileID: 7421351207341412311}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &763016402408693086
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -987,7 +1044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5611312931579645231, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
-      value: 4.75
+      value: 8.25
       objectReference: {fileID: 0}
     - target: {fileID: 5611312931579645231, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
@@ -999,7 +1056,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5611312931579645231, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_AsymptoteSlip
-      value: 4
+      value: 1.78
       objectReference: {fileID: 0}
     - target: {fileID: 5611312931579645231, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumValue
@@ -1071,7 +1128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7655141125747189613, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_Name
-      value: raceCarRed
+      value: raceCarRed (WheelColliders)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7655141125747189613, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_Mass
@@ -1091,7 +1152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_Stiffness
-      value: 4.75
+      value: 8.25
       objectReference: {fileID: 0}
     - target: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_SidewaysFriction.m_Stiffness
@@ -1103,7 +1164,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_AsymptoteSlip
-      value: 4
+      value: 1.78
       objectReference: {fileID: 0}
     - target: {fileID: 7793230933737908991, guid: 4d094fffd42f56540acf28192f6b63a0, type: 3}
       propertyPath: m_ForwardFriction.m_ExtremumValue
@@ -1148,7 +1209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 32.44
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1160,15 +1221,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22975293
+      value: 0.22975291
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -2.6645353e-15
+      value: -0.000000018722721
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.8817837e-16
+      value: 0.000000004419835
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1194,11 +1255,11 @@ PrefabInstance:
     - target: {fileID: 5333791413229002132, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 543450653319836160}
+      objectReference: {fileID: 1254167737}
     - target: {fileID: 5333791413229002132, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 543450653319836160}
+      objectReference: {fileID: 1254167737}
     - target: {fileID: 6113071788768025783, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_Name
       value: Car Follow Virtual Camera
@@ -1217,7 +1278,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 32.44
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1229,15 +1290,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.22975293
+      value: 0.22975291
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -2.6645353e-15
+      value: -0.000000018722721
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 8.8817837e-16
+      value: 0.000000004419835
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
