@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TMPro;
 using Unity.VisualScripting;
@@ -14,10 +16,12 @@ public class AxleInfo
     // The axel's left wheel collider and model.
     public WheelCollider leftWheelCollider;
     public Transform leftWheelModel;
+    public Vector3 initialLeftWheelRotation = Vector3.zero;
 
     // The axel's right wheel collider and model.
     public WheelCollider rightWheelCollider;
     public Transform rightWheelModel;
+    public Vector3 initialRightWheelRotation = Vector3.zero;
 
     public bool hasMotor = false;
     public bool hasSteering = false;
@@ -121,8 +125,9 @@ public class Car : MonoBehaviour
 
         applyAntiRoll(axle.leftWheelCollider, axle.rightWheelCollider);
 
-        moveWheelModel(axle.leftWheelCollider, axle.leftWheelModel);
-        moveWheelModel(axle.rightWheelCollider, axle.rightWheelModel);
+        moveWheelModel(axle.leftWheelCollider, axle.leftWheelModel, axle.initialLeftWheelRotation);
+        moveWheelModel(
+            axle.rightWheelCollider, axle.rightWheelModel, axle.initialRightWheelRotation);
     }
 
     void applyAntiRoll(WheelCollider leftWheel, WheelCollider rightWheel)
@@ -172,22 +177,39 @@ public class Car : MonoBehaviour
         return (int)currentDirection * maxSteeringAngle;
     }
 
-    void moveWheelModel(WheelCollider collider, Transform model)
+    void moveWheelModel(WheelCollider collider, Transform model, Vector3 initialModelRotation)
     {
         Vector3 colliderWorldPosition;
         Quaternion colliderWorldRotation;
+        Quaternion initialMeshRotationQ = Quaternion.Euler(initialModelRotation);
 
         collider.GetWorldPose(out colliderWorldPosition, out colliderWorldRotation);
 
         model.transform.position = colliderWorldPosition;
-        model.transform.rotation = colliderWorldRotation * initialMeshParentRotation;
+        model.transform.rotation =
+            colliderWorldRotation * initialMeshParentRotation * initialMeshRotationQ;
     }
 
     void updateTextWithSpeed()
     {
-        float mph = getMph(frontLeft);
+        float mph = axels.Min(axle => getMph(axle));
 
-        text.text = $"Motor Torque: {currentMotorTorque} | RPM: {frontLeft.rpm}\nMPH: {mph}";
+        text.text = $"Motor Torque: {currentMotorTorque}\nMPH: {Mathf.CeilToInt(mph)}";
+    }
+
+    /// <summary>
+    /// Returns the speed of the slowest wheel on an axle in MPH.
+    /// </summary>
+    ///
+    /// <remarks>
+    /// Wheels off ground spin more, thus record a high MPH. So just choose lowest MPH.
+    /// </remarks>
+    float getMph(AxleInfo axle)
+    {
+        float mphLeft = getMph(axle.leftWheelCollider);
+        float mphRight = getMph(axle.rightWheelCollider);
+
+        return Mathf.Min(mphLeft, mphRight);
     }
 
     float getMph(WheelCollider collider)
@@ -197,7 +219,7 @@ public class Car : MonoBehaviour
         float speedOnKmh = (circumFerenceM / 1000.0f * collider.rpm) * 60;
 
         // converting kmh to mph
-        return speedOnKmh * 0.62f;
+        return Mathf.Abs(speedOnKmh * 0.62f);
     }
 
     bool touchedRightSideOfScreen(Touch touch)
