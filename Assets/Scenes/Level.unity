@@ -292,6 +292,11 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!4 &1046322038 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4770990150805412748, guid: 468476c60ebb44eedbb166101f8a32bd, type: 3}
+  m_PrefabInstance: {fileID: 4770990150374736122}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1053030719
 GameObject:
   m_ObjectHideFlags: 0
@@ -531,11 +536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca9cf2b1c48840088d830d742c98f57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!4 &1772533091 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2413640601538121494, guid: 13f63afa59b504875bd353148fe1f528, type: 3}
-  m_PrefabInstance: {fileID: 9190989203789885135}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2094310949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1086500758699209376, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
@@ -744,6 +744,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Car (SphereCollider)
       objectReference: {fileID: 0}
+    - target: {fileID: 4770990151626378112, guid: 468476c60ebb44eedbb166101f8a32bd, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770990151626378112, guid: 468476c60ebb44eedbb166101f8a32bd, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4770990151626378113, guid: 468476c60ebb44eedbb166101f8a32bd, type: 3}
+      propertyPath: m_Radius
+      value: 0.3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 468476c60ebb44eedbb166101f8a32bd, type: 3}
 --- !u!1001 &6583707034543045418
@@ -860,7 +872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7513932980212212780, guid: 6d78b89732c0e13428a65d910971543b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -906,11 +918,11 @@ PrefabInstance:
     - target: {fileID: 5333791413229002132, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 1772533091}
+      objectReference: {fileID: 1046322038}
     - target: {fileID: 5333791413229002132, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LookAt
       value: 
-      objectReference: {fileID: 1772533091}
+      objectReference: {fileID: 1046322038}
     - target: {fileID: 6113071788768025783, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_Name
       value: Car Follow Virtual Camera
@@ -929,7 +941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 16
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7680831443103685021, guid: 2d85c93f9347e2942a1edf7a22e4404e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1212,7 +1224,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6732768637227938812, guid: 13f63afa59b504875bd353148fe1f528, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 13f63afa59b504875bd353148fe1f528, type: 3}
