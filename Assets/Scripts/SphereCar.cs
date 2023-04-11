@@ -21,6 +21,7 @@ public class SphereCar : MonoBehaviour
     private float forwardAccelerationInput = 0.0f;
     private float steerInput = 0.0f;
     private bool grounded = true;
+    private RaycastHit groundRaycastHit;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,10 @@ public class SphereCar : MonoBehaviour
         {
             sphere.drag = initialSphereDrag;
             sphere.AddForce(transform.forward * forwardAccelerationInput);
+
+            // Make car's "up" be the same as the ground raycast up. So it angles on ramps.
+            transform.rotation *=
+                Quaternion.FromToRotation(transform.up, groundRaycastHit.normal);
         }
         else
         {
@@ -66,10 +71,9 @@ public class SphereCar : MonoBehaviour
 
     bool isGrounded()
     {
-        RaycastHit raycastHit;
         Vector3 startingPosition = rayToFindGroundStartingPoint.position;
 
-        return Physics.Raycast(startingPosition, -transform.up, out raycastHit, groundLayer);
+        return Physics.Raycast(startingPosition, -transform.up, out groundRaycastHit, groundLayer);
     }
 
     public enum Direction : int
