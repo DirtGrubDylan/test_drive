@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SphereCar : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class SphereCar : MonoBehaviour
     [SerializeField] private Transform rayToFindGroundStartingPoint = null;
     [SerializeField] private float rayLengthToFindGround = 0.5f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private Transform frontLeftWheelTransform;
+    [SerializeField] private Transform frontRightWheelTransform;
+    [SerializeField] private float maxFrontWheelYRotation;
 
     private Vector3 spherePositionOffset = Vector3.zero;
     private float initialSphereDrag = 0.0f;
@@ -22,6 +26,8 @@ public class SphereCar : MonoBehaviour
     private float steerInput = 0.0f;
     private bool grounded = false;
     private RaycastHit groundRaycastHit;
+    private Vector3 frontLeftWheelInitialLocalRotationEuler;
+    private Vector3 frontRightWheelInitialLocalRotationEuler;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +37,8 @@ public class SphereCar : MonoBehaviour
         sphere.transform.SetParent(null);
 
         initialSphereDrag = sphere.drag;
+        frontLeftWheelInitialLocalRotationEuler = frontLeftWheelTransform.localEulerAngles;
+        frontRightWheelInitialLocalRotationEuler = frontRightWheelTransform.localEulerAngles;
     }
 
     // Update is called once per frame
@@ -41,6 +49,8 @@ public class SphereCar : MonoBehaviour
         steerInput = (int)currentDirection * turningSpeed * Time.deltaTime;
 
         transform.position = sphere.transform.position + spherePositionOffset;
+
+        steerFrontWheelTransforms();
 
         if (isGrounded())
         {
@@ -70,6 +80,16 @@ public class SphereCar : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision other)
+    {
+        Debug.Log($"Collided with {other.collider.tag} on layer {other.gameObject.layer}");
+
+        if (other.collider.CompareTag("Obstacle"))
+        {
+            SceneManager.LoadScene("MainMenu");
+        }
+    }
+
     bool isGrounded()
     {
         Vector3 startingPosition = rayToFindGroundStartingPoint.position;
@@ -80,6 +100,16 @@ public class SphereCar : MonoBehaviour
             out groundRaycastHit,
             rayLengthToFindGround,
             groundLayer);
+    }
+
+    void steerFrontWheelTransforms()
+    {
+        float turnAngle = (int)currentDirection * maxFrontWheelYRotation;
+
+        frontLeftWheelTransform.localRotation =
+            Quaternion.Euler(frontLeftWheelInitialLocalRotationEuler + Vector3.up * turnAngle);
+        frontRightWheelTransform.localRotation =
+            Quaternion.Euler(frontRightWheelInitialLocalRotationEuler + Vector3.up * turnAngle);
     }
 
     public enum Direction : int
