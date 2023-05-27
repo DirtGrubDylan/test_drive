@@ -24,7 +24,6 @@ public class SphereCar : MonoBehaviour
     private Direction currentDirection = Direction.Middle;
     private float forwardAccelerationInput = 0.0f;
     private float steerInput = 0.0f;
-    private bool grounded = false;
     private RaycastHit groundRaycastHit;
     private Vector3 frontLeftWheelInitialLocalRotationEuler;
     private Vector3 frontRightWheelInitialLocalRotationEuler;
@@ -77,16 +76,6 @@ public class SphereCar : MonoBehaviour
         {
             sphere.drag = dragInAir;
             sphere.AddForce(-Vector3.up * additionalGravityForce * additionalGravityForceScalar);
-        }
-    }
-
-    void OnCollisionEnter(Collision other)
-    {
-        Debug.Log($"Collided with {other.collider.tag} on layer {other.gameObject.layer}");
-
-        if (other.collider.CompareTag("Obstacle"))
-        {
-            SceneManager.LoadScene("MainMenu");
         }
     }
 
