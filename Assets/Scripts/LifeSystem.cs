@@ -13,7 +13,8 @@ public class LifeSystem : MonoBehaviour
 
     [SerializeField] private int maxLives = 5;
     [SerializeField] private int lifeGainDurationSeconds = 60;
-    [SerializeField] private string livesReadyMessage = "You Have a Life!";
+    [SerializeField] private string notificationTitle = "Test Drive";
+    [SerializeField] private string notificationMessage = "You Have a Life D00D!";
 
     void Update()
     {
@@ -21,6 +22,7 @@ public class LifeSystem : MonoBehaviour
         {
             SetLives(maxLives);
             SetLifeGeneratedUtcNow();
+            MobileNotificationHandler.SendNotifications(notificationTitle, notificationMessage);
         }
     }
 
